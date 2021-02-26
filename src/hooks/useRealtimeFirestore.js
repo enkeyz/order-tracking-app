@@ -19,7 +19,7 @@ const useRealtimeFirestore = (collectionName) => {
 
       setOrderList(items);
     });
-  }, [orderList, collectionName]);
+  }, []);
 
   return orderList;
 };

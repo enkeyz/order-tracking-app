@@ -21,13 +21,11 @@ const OrderFormModal = () => {
     setOpen(false);
   };
 
-  const handleSubmit = (ev) => {
+  const handleSubmit = async (ev) => {
     ev.preventDefault();
-    console.log("form submitted");
-    console.log(formData);
 
-    addOrder(formData);
     setOpen(false);
+    await addOrder(formData);
   };
 
   return (
