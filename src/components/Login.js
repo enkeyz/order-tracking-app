@@ -21,8 +21,18 @@ const Login = () => {
   }
 
   return (
-    <Box display="flex" alignItems="center" justifyContent="center">
-      <Button variant="contained" color="primary" onClick={signInWithGoogle}>
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      style={{ width: "100vw", height: "100vh" }}
+    >
+      <Button
+        variant="contained"
+        color="primary"
+        size="large"
+        onClick={signInWithGoogle}
+      >
         LogIn with Google
       </Button>
     </Box>

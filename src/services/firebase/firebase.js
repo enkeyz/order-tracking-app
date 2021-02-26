@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import firebase from "firebase/app";
 import "firebase/auth";
+import "firebase/firestore";
 
 dotenv.config();
 
@@ -16,10 +17,11 @@ firebase.initializeApp({
 });
 
 export const auth = firebase.auth();
+export const fireStore = firebase.firestore();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 
-export const signInWithGoogle = () => {
-  auth
+export const signInWithGoogle = async () => {
+  await auth
     .signInWithPopup(googleProvider)
     .then((res) => {
       console.log(res.user);
@@ -29,8 +31,8 @@ export const signInWithGoogle = () => {
     });
 };
 
-export const logOut = async () => {
-  auth
+export const logOutWithGoogle = async () => {
+  await auth
     .signOut()
     .then(() => {
       console.log("logged out");
@@ -38,4 +40,41 @@ export const logOut = async () => {
     .catch((error) => {
       console.log(error.message);
     });
+};
+
+export const addOrder = async (order) => {
+  await fireStore.collection("order-list").add({
+    ...order,
+    addedOn: firebase.firestore.FieldValue.serverTimestamp(),
+    userId: auth.currentUser.uid,
+    id: new Date().getTime().toString(),
+  });
+};
+
+export const getOrders = async () => {
+  if (!auth.currentUser) return;
+
+  const orderList = [];
+
+  await fireStore
+    .collection("order-list")
+    .where("userId", "==", auth.currentUser.uid)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        orderList.push(doc.data());
+      });
+    });
+
+  return orderList;
+};
+
+export const removeOrder = async (id) => {
+  var order_query = fireStore.collection("order-list").where("id", "==", id);
+
+  await order_query.get().then((querySnapshot) => {
+    querySnapshot.forEach((doc) => {
+      doc.ref.delete();
+    });
+  });
 };

@@ -1,14 +1,14 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
-
-import Button from "@material-ui/core/Button";
-import Box from "@material-ui/core/Box";
+import useRealtimeFirestore from "../../hooks/useRealtimeFirestore";
 
 import { UserContext } from "../../providers/UserProvider";
-import { logOut } from "../../services/firebase/firebase";
+import DashboardHeader from "./DashboardHeader";
+import OrderList from "./Order/OrderList";
 
 const Dashboard = () => {
   const user = useContext(UserContext);
+  const orderList = useRealtimeFirestore("order-list");
   const [redirect, setRedirect] = useState(null);
 
   useEffect(() => {
@@ -21,15 +21,8 @@ const Dashboard = () => {
 
   return (
     <>
-      <header>
-        <h1>Dashboard</h1>
-        <p>Welcome, {user && user.displayName}</p>
-      </header>
-      <Box display="flex" alignItems="center" justifyContent="center">
-        <Button variant="contained" color="primary" onClick={logOut}>
-          Log out
-        </Button>
-      </Box>
+      <DashboardHeader userName={user ? user.displayName : ""} />
+      {orderList && <OrderList orderList={orderList} />}
     </>
   );
 };
