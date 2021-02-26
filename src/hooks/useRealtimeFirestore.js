@@ -14,7 +14,7 @@ const useRealtimeFirestore = (collectionName) => {
     query.onSnapshot((querySnapshot) => {
       const items = [];
       querySnapshot.forEach((doc) => {
-        items.unshift(doc.data());
+        items.push(doc.data());
       });
 
       setOrderList(items);
