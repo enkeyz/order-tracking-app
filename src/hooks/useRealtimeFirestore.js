@@ -9,9 +9,10 @@ const useRealtimeFirestore = (collectionName) => {
 
     const query = fireStore
       .collection(collectionName)
-      .where("userId", "==", auth.currentUser.uid);
+      .where("userId", "==", auth.currentUser.uid)
+      .orderBy("id", "desc");
 
-    query.onSnapshot((querySnapshot) => {
+    const unSubscribe = query.onSnapshot((querySnapshot) => {
       const items = [];
       querySnapshot.forEach((doc) => {
         items.push(doc.data());
@@ -19,6 +20,8 @@ const useRealtimeFirestore = (collectionName) => {
 
       setOrderList(items);
     });
+
+    return () => unSubscribe();
   }, []);
 
   return orderList;

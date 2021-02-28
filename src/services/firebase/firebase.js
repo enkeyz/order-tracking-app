@@ -21,34 +21,31 @@ export const fireStore = firebase.firestore();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 export const signInWithGoogle = async () => {
-  await auth
-    .signInWithPopup(googleProvider)
-    .then((res) => {
-      console.log(res.user);
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
+  try {
+    await auth.signInWithPopup(googleProvider);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const logOutWithGoogle = async () => {
-  await auth
-    .signOut()
-    .then(() => {
-      console.log("logged out");
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
+  try {
+    await auth.signOut();
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const addOrder = async (order) => {
-  await fireStore.collection("order-list").add({
-    ...order,
-    addedOn: firebase.firestore.FieldValue.serverTimestamp(),
-    userId: auth.currentUser.uid,
-    id: new Date().getTime().toString(),
-  });
+  try {
+    await fireStore.collection("order-list").add({
+      ...order,
+      addedOn: new Date().toString(),
+      userId: auth.currentUser.uid,
+    });
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const getOrders = async () => {
@@ -56,25 +53,50 @@ export const getOrders = async () => {
 
   const orderList = [];
 
-  await fireStore
+  const order_query = fireStore
     .collection("order-list")
-    .where("userId", "==", auth.currentUser.uid)
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        orderList.push(doc.data());
-      });
+    .where("userId", "==", auth.currentUser.uid);
+
+  try {
+    const querySnapshot = await order_query.get();
+    querySnapshot.forEach((doc) => {
+      orderList.push(doc.data());
     });
+  } catch (error) {
+    console.error(error);
+  }
 
   return orderList;
 };
 
 export const removeOrder = async (id) => {
-  var order_query = fireStore.collection("order-list").where("id", "==", id);
+  const order_query = fireStore
+    .collection("order-list")
+    .where("userId", "==", auth.currentUser.uid)
+    .where("id", "==", id);
 
-  await order_query.get().then((querySnapshot) => {
+  try {
+    const querySnapshot = await order_query.get();
     querySnapshot.forEach((doc) => {
       doc.ref.delete();
     });
-  });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const updateOrder = async (id, toUpdate) => {
+  const order_query = fireStore
+    .collection("order-list")
+    .where("userId", "==", auth.currentUser.uid)
+    .where("id", "==", id);
+
+  try {
+    const querySnapshot = await order_query.get();
+    querySnapshot.forEach((doc) => {
+      doc.ref.update(toUpdate);
+    });
+  } catch (error) {
+    console.error(error);
+  }
 };

@@ -8,36 +8,45 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 
 import { addOrder } from "../../../services/firebase/firebase";
 
-const OrderFormModal = () => {
-  const [open, setOpen] = React.useState(true);
+const OrderFormModal = ({ open, onClose }) => {
   const [formData, setFormData] = useState({
     title: "",
     name: "",
     email: "",
     link: "",
+    orderId: "",
   });
-
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   const handleSubmit = async (ev) => {
     ev.preventDefault();
 
-    setOpen(false);
-    await addOrder(formData);
+    onClose();
+    await addOrder({
+      ...formData,
+      completed: false,
+      id: new Date().getTime().toString(),
+    });
   };
 
   return (
     <div>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="form-dialog-title"
-      >
+      <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Enter order data</DialogTitle>
         <DialogContent>
           <form onSubmit={handleSubmit}>
+            <TextField
+              autoFocus
+              margin="dense"
+              id="order-id"
+              label="Order id"
+              type="text"
+              fullWidth
+              required={true}
+              value={formData.orderId}
+              onChange={(ev) =>
+                setFormData({ ...formData, orderId: ev.target.value })
+              }
+            />
             <TextField
               autoFocus
               margin="dense"
@@ -91,7 +100,7 @@ const OrderFormModal = () => {
               <Button type="submit" color="primary">
                 Send
               </Button>
-              <Button onClick={handleClose} color="primary">
+              <Button onClick={onClose} color="primary">
                 Cancel
               </Button>
             </DialogActions>
