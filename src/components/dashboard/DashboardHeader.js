@@ -5,7 +5,10 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
-import { logOutWithGoogle } from "../../services/firebase/firebase";
+import {
+  logOutWithGoogle,
+  removeAllDocsFromCurrentUser,
+} from "../../services/firebase/firebase";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,6 +29,10 @@ const DashboardHeader = ({ logOut, userName }) => {
           <Typography variant="h6" className={classes.title}>
             Welcome, {userName}
           </Typography>
+          <Button color="inherit" onClick={removeAllDocsFromCurrentUser}>
+            Delete all data
+          </Button>
+          <Button color="inherit">Profile</Button>
           <Button color="inherit" onClick={logOutWithGoogle}>
             Log out
           </Button>

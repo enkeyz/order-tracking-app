@@ -40,7 +40,7 @@ export const logOutWithGoogle = async () => {
   try {
     if (!auth.currentUser.emailVerified) {
       try {
-        await removeAllDocsByUserId(auth.currentUser.uid);
+        await removeAllDocsFromCurrentUser();
         await auth.currentUser.delete();
       } catch (error) {
         console.error(error);
@@ -65,7 +65,7 @@ export const addOrder = async (order) => {
   }
 };
 
-export const removeAllDocsByUserId = async (userId) => {
+export const removeAllDocsFromCurrentUser = async () => {
   const order_query = fireStore
     .collection("order-list")
     .where("userId", "==", auth.currentUser.uid);

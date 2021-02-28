@@ -26,7 +26,6 @@ const OrderItem = ({ order }) => {
             <Typography variant="h6">{order.title}</Typography>
           </Grid>
           <Grid item>{order.name}</Grid>
-          <Grid item>Completed: {order.completed.toString()}</Grid>
         </Grid>
         <Typography variant="body2">
           {new Date(order.addedOn).toDateString()}
