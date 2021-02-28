@@ -11,8 +11,10 @@ import { addOrder } from "../../../services/firebase/firebase";
 const OrderFormModal = ({ open, onClose }) => {
   const [formData, setFormData] = useState({
     title: "",
+    price: "",
     name: "",
     email: "",
+    phone: "",
     link: "",
     orderId: "",
   });
@@ -36,7 +38,8 @@ const OrderFormModal = ({ open, onClose }) => {
           <form onSubmit={handleSubmit}>
             <TextField
               autoFocus
-              margin="dense"
+              margin="normal"
+              variant="outlined"
               id="order-id"
               label="Order id"
               type="text"
@@ -49,7 +52,22 @@ const OrderFormModal = ({ open, onClose }) => {
             />
             <TextField
               autoFocus
-              margin="dense"
+              margin="normal"
+              variant="outlined"
+              id="price"
+              label="Price"
+              type="number"
+              fullWidth
+              required={true}
+              value={formData.price}
+              onChange={(ev) =>
+                setFormData({ ...formData, price: ev.target.value })
+              }
+            />
+            <TextField
+              autoFocus
+              margin="normal"
+              variant="outlined"
               id="title"
               label="Title"
               type="text"
@@ -61,7 +79,8 @@ const OrderFormModal = ({ open, onClose }) => {
               }
             />
             <TextField
-              margin="dense"
+              margin="normal"
+              variant="outlined"
               id="name"
               label="Name"
               type="name"
@@ -73,7 +92,8 @@ const OrderFormModal = ({ open, onClose }) => {
               }
             />
             <TextField
-              margin="dense"
+              margin="normal"
+              variant="outlined"
               id="email"
               label="Email Address"
               type="email"
@@ -85,7 +105,21 @@ const OrderFormModal = ({ open, onClose }) => {
               }
             />
             <TextField
-              margin="dense"
+              margin="normal"
+              variant="outlined"
+              id="phone"
+              label="Phone"
+              type="tel"
+              fullWidth
+              required={true}
+              value={formData.phone}
+              onChange={(ev) =>
+                setFormData({ ...formData, phone: ev.target.value })
+              }
+            />
+            <TextField
+              margin="normal"
+              variant="outlined"
               id="url"
               label="Order url"
               type="url"

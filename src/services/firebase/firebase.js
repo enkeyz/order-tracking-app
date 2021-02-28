@@ -38,7 +38,16 @@ export const signInAnonymous = async () => {
 
 export const logOutWithGoogle = async () => {
   try {
-    await auth.signOut();
+    if (!auth.currentUser.emailVerified) {
+      try {
+        await removeAllDocsByUserId(auth.currentUser.uid);
+        await auth.currentUser.delete();
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      await auth.signOut();
+    }
   } catch (error) {
     console.error(error);
   }
@@ -50,6 +59,21 @@ export const addOrder = async (order) => {
       ...order,
       addedOn: new Date().toString(),
       userId: auth.currentUser.uid,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const removeAllDocsByUserId = async (userId) => {
+  const order_query = fireStore
+    .collection("order-list")
+    .where("userId", "==", auth.currentUser.uid);
+
+  try {
+    const querySnapshot = await order_query.get();
+    querySnapshot.forEach((doc) => {
+      doc.ref.delete();
     });
   } catch (error) {
     console.error(error);
