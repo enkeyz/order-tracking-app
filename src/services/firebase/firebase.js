@@ -28,6 +28,14 @@ export const signInWithGoogle = async () => {
   }
 };
 
+export const signInAnonymous = async () => {
+  try {
+    await auth.signInAnonymously();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 export const logOutWithGoogle = async () => {
   try {
     await auth.signOut();
