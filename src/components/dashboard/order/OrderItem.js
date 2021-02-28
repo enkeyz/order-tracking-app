@@ -31,7 +31,12 @@ const OrderItem = ({ order }) => {
         <Typography variant="body2">
           {new Date(order.addedOn).toDateString()}
         </Typography>
-        <ButtonGroup color="primary" aria-label="outlined primary button group">
+        <ButtonGroup
+          size="small"
+          variant="text"
+          color="primary"
+          aria-label="outlined primary button group"
+        >
           <IconButton onClick={async () => await removeOrder(order.id)}>
             <DeleteIcon />
           </IconButton>
