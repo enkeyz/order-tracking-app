@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Tabs, Tab } from "@material-ui/core";
+import { Tabs, Tab } from "@material-ui/core";
 
 import OrderItem from "./OrderItem";
 import OrderFilterPanel from "./OrderFilterPanel";

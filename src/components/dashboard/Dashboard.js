@@ -8,6 +8,7 @@ import DashboardHeader from "./DashboardHeader";
 import OrderList from "./order/OrderList";
 import AddOrderButton from "./order/AddOrderButton";
 import OrderFormModal from "./order/OrderFormModal";
+import SnackBarPopup from "./SnackBarPopup";
 
 const Dashboard = () => {
   const user = useContext(UserContext);
@@ -43,6 +44,7 @@ const Dashboard = () => {
         {orderList && <OrderList orderList={orderList} />}
       </Container>
       <OrderFormModal open={formOpen} onClose={handleClose} />
+      <SnackBarPopup isOpen={true} message="Logged in!" severity="info" />
     </>
   );
 };

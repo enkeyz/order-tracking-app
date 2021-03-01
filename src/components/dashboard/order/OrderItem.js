@@ -6,6 +6,11 @@ import {
   ButtonGroup,
   Button,
 } from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import DoneIcon from "@material-ui/icons/Done";
+import LinkIcon from "@material-ui/icons/Link";
+import EditIcon from "@material-ui/icons/Edit";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { removeOrder, updateOrder } from "../../../services/firebase/firebase";
@@ -37,7 +42,7 @@ const OrderItem = ({ order }) => {
               <Grid item xs>
                 <Typography
                   gutterBottom
-                  variant="subtitle1"
+                  variant="h6"
                   style={{
                     textDecoration: order.completed ? "line-through" : "none",
                   }}
@@ -51,7 +56,6 @@ const OrderItem = ({ order }) => {
                   {order.orderId}
                 </Typography>
               </Grid>
-              <Grid item></Grid>
             </Grid>
             <Grid item>
               <Typography variant="subtitle1">
@@ -60,25 +64,26 @@ const OrderItem = ({ order }) => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid container>
-          <Grid item xs={12}>
-            <ButtonGroup
-              color="primary"
-              fullWidth={true}
-              size="small"
-              variant="text"
-            >
-              <Button
-                onClick={async () => updateOrder(order.id, { completed: true })}
-              >
-                Complete
-              </Button>
-              <Button>Edit</Button>
-              <Button onClick={async () => removeOrder(order.id)}>
-                Delete
-              </Button>
-              <Button onClick={handleClick}>Link</Button>
-            </ButtonGroup>
+        <Grid container direction="row" margin={-10}>
+          <Grid item xs={3} align="center">
+            <IconButton color="primary" aria-label="complete">
+              <DoneIcon />
+            </IconButton>
+          </Grid>
+          <Grid item xs={3} align="center">
+            <IconButton color="primary" aria-label="complete">
+              <EditIcon />
+            </IconButton>
+          </Grid>
+          <Grid item xs={3} align="center">
+            <IconButton color="primary" aria-label="complete">
+              <DeleteIcon />
+            </IconButton>
+          </Grid>
+          <Grid item xs={3} align="center">
+            <IconButton color="primary" aria-label="complete">
+              <LinkIcon />
+            </IconButton>
           </Grid>
         </Grid>
       </Paper>

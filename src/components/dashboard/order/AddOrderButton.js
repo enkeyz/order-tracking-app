@@ -7,7 +7,7 @@ const AddOrderButton = () => {
     <Fab
       size="medium"
       color="primary"
-      style={{ position: "fixed", top: "5rem", right: "1rem" }}
+      style={{ position: "fixed", top: "5rem", right: "1rem", zIndex: "11" }}
     >
       <AddIcon />
     </Fab>
