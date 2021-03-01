@@ -1,26 +1,19 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-
-import "./App.css";
-import Login from "./components/Login";
+import PrivateRoute from "./components/PrivateRoute";
 import Dashboard from "./components/dashboard/Dashboard";
-import UserProvider from "./providers/UserProvider";
+import Login from "./components/Login";
+import { Switch, Route } from "react-router-dom";
 
 function App() {
   return (
-    <UserProvider>
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <Login />
-          </Route>
-          <Route path="/dashboard">
-            <Dashboard />
-          </Route>
-        </Switch>
-      </Router>
-    </UserProvider>
+    <Switch>
+      <PrivateRoute path="/dashboard">
+        <Dashboard />
+      </PrivateRoute>
+      <Route path="/">
+        <Login />
+      </Route>
+    </Switch>
   );
 }
-
 export default App;

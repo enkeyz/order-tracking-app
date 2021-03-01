@@ -1,19 +1,11 @@
 import React from "react";
-import {
-  Grid,
-  Paper,
-  Typography,
-  ButtonGroup,
-  Button,
-} from "@material-ui/core";
+import { Grid, Paper, Typography } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import DoneIcon from "@material-ui/icons/Done";
 import LinkIcon from "@material-ui/icons/Link";
 import EditIcon from "@material-ui/icons/Edit";
 import { makeStyles } from "@material-ui/core/styles";
-
-import { removeOrder, updateOrder } from "../../../services/firebase/firebase";
 
 const useStyles = makeStyles((theme) => ({
   root: {

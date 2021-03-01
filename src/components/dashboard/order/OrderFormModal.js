@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useFirestore } from "react-redux-firebase";
+import { useSelector } from "react-redux";
+
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -6,8 +9,6 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import MenuItem from "@material-ui/core/MenuItem";
-
-import { addOrder } from "../../../services/firebase/firebase";
 
 const currencies = [
   {
@@ -25,10 +26,21 @@ const currencies = [
 ];
 
 const OrderFormModal = ({ open, onClose }) => {
+  const firestore = useFirestore();
+  const { uid } = useSelector((state) => state.firebase.auth);
+
+  const addNewOrder = (order) => {
+    firestore
+      .collection("users")
+      .doc(uid)
+      .collection("orders")
+      .add({ ...order, completed: false });
+  };
+
   const [formData, setFormData] = useState({
     title: "",
     price: "",
-    currency: "",
+    currency: "HUF",
     name: "",
     email: "",
     phone: "",
@@ -44,13 +56,8 @@ const OrderFormModal = ({ open, onClose }) => {
   const handleSubmit = async (ev) => {
     ev.preventDefault();
 
+    addNewOrder(formData);
     onClose();
-    await addOrder({
-      ...formData,
-      currency,
-      completed: false,
-      id: new Date().getTime().toString(),
-    });
   };
 
   return (

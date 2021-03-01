@@ -1,26 +1,22 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Redirect } from "react-router-dom";
+import React from "react";
 import { Box, Button, Typography } from "@material-ui/core";
-
-import {
-  signInWithGoogle,
-  signInAnonymous,
-} from "../services/firebase/firebase";
-import { UserContext } from "../providers/UserProvider";
+import { useFirebase } from "react-redux-firebase";
+import { useHistory } from "react-router-dom";
 
 const Login = () => {
-  const user = useContext(UserContext);
-  const [redirect, setRedirect] = useState(null);
+  const firebase = useFirebase();
+  const history = useHistory();
 
-  useEffect(() => {
-    if (user && !redirect) {
-      setRedirect("/dashboard");
-    }
-  }, [user, redirect]);
-
-  if (user && redirect) {
-    return <Redirect to={redirect} />;
-  }
+  const signInWithGoogle = () => {
+    firebase
+      .login({
+        provider: "google",
+        type: "popup",
+      })
+      .then(() => {
+        history.push("/dashboard");
+      });
+  };
 
   return (
     <Box
@@ -41,14 +37,6 @@ const Login = () => {
         style={{ marginBottom: "1rem" }}
       >
         LogIn with Google
-      </Button>
-      <Button
-        variant="contained"
-        color="primary"
-        size="large"
-        onClick={signInAnonymous}
-      >
-        Anonymous login
       </Button>
     </Box>
   );

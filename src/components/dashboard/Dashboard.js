@@ -1,20 +1,18 @@
-import React, { useContext, useState, useEffect } from "react";
-import { Redirect } from "react-router-dom";
+import React, { useState } from "react";
 import { Container } from "@material-ui/core";
 
-import useRealtimeFirestore from "../../hooks/useRealtimeFirestore";
-import { UserContext } from "../../providers/UserProvider";
 import DashboardHeader from "./DashboardHeader";
 import OrderList from "./order/OrderList";
 import AddOrderButton from "./order/AddOrderButton";
 import OrderFormModal from "./order/OrderFormModal";
 import SnackBarPopup from "./SnackBarPopup";
 
+import { useSelector } from "react-redux";
+
 const Dashboard = () => {
-  const user = useContext(UserContext);
-  const orderList = useRealtimeFirestore("order-list");
-  const [redirect, setRedirect] = useState(null);
   const [formOpen, setFormOpen] = useState(false);
+
+  const { displayName } = useSelector((state) => state.firebase.auth);
 
   const handleClickOpen = () => {
     setFormOpen(true);
@@ -24,24 +22,14 @@ const Dashboard = () => {
     setFormOpen(false);
   };
 
-  useEffect(() => {
-    if (!user) setRedirect("/");
-  }, [user]);
-
-  if (redirect) {
-    return <Redirect to={redirect} />;
-  }
-
   return (
     <>
-      <DashboardHeader
-        userName={user && user.displayName ? user.displayName : "Anonymous"}
-      />
+      <DashboardHeader userName={displayName} />
       <div onClick={handleClickOpen}>
         <AddOrderButton />
       </div>
       <Container maxWidth="sm">
-        {orderList && <OrderList orderList={orderList} />}
+        <OrderList />
       </Container>
       <OrderFormModal open={formOpen} onClose={handleClose} />
       <SnackBarPopup isOpen={true} message="Logged in!" severity="info" />
