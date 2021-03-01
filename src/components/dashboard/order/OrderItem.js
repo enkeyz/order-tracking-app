@@ -4,57 +4,83 @@ import {
   Paper,
   Typography,
   ButtonGroup,
-  IconButton,
+  Button,
 } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
-import DoneIcon from "@material-ui/icons/Done";
-import LinkIcon from "@material-ui/icons/Link";
+import { makeStyles } from "@material-ui/core/styles";
 
 import { removeOrder, updateOrder } from "../../../services/firebase/firebase";
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    padding: theme.spacing(2),
+    margin: "1rem",
+    maxWidth: 500,
+  },
+}));
+
 const OrderItem = ({ order }) => {
-  const handleClick = (url) => {
-    window.open(url, "_blank");
+  const classes = useStyles();
+
+  const handleClick = () => {
+    window.open(order.link, "_blank");
   };
 
   return (
-    <Grid item>
-      <Paper style={{ padding: "0.8rem" }}>
-        <Grid container alignItems="center" justify="space-between">
-          <Grid item>
-            <Typography variant="h6">{order.title}</Typography>
+    <div className={classes.root}>
+      <Paper className={classes.paper} elevation={5}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm container>
+            <Grid item xs container direction="column" spacing={2}>
+              <Grid item xs>
+                <Typography
+                  gutterBottom
+                  variant="subtitle1"
+                  style={{
+                    textDecoration: order.completed ? "line-through" : "none",
+                  }}
+                >
+                  {order.title}
+                </Typography>
+                <Typography variant="body2" gutterBottom>
+                  {order.name}
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                  {order.orderId}
+                </Typography>
+              </Grid>
+              <Grid item></Grid>
+            </Grid>
+            <Grid item>
+              <Typography variant="subtitle1">{order.price}</Typography>
+            </Grid>
           </Grid>
-          <Grid item>{order.name}</Grid>
         </Grid>
-        <Typography variant="body2">
-          {new Date(order.addedOn).toDateString()}
-        </Typography>
-        <ButtonGroup
-          size="small"
-          variant="text"
-          color="primary"
-          aria-label="outlined primary button group"
-        >
-          <IconButton onClick={async () => await removeOrder(order.id)}>
-            <DeleteIcon />
-          </IconButton>
-          <IconButton>
-            <EditIcon />
-          </IconButton>
-          <IconButton
-            onClick={async () =>
-              await updateOrder(order.id, { completed: true })
-            }
-          >
-            <DoneIcon />
-          </IconButton>
-          <IconButton onClick={() => handleClick(order.link)}>
-            <LinkIcon />
-          </IconButton>
-        </ButtonGroup>
+        <Grid container>
+          <Grid item xs={12}>
+            <ButtonGroup
+              color="primary"
+              fullWidth={true}
+              size="small"
+              variant="text"
+            >
+              <Button
+                onClick={async () => updateOrder(order.id, { completed: true })}
+              >
+                Complete
+              </Button>
+              <Button>Edit</Button>
+              <Button onClick={async () => removeOrder(order.id)}>
+                Delete
+              </Button>
+              <Button onClick={handleClick}>Link</Button>
+            </ButtonGroup>
+          </Grid>
+        </Grid>
       </Paper>
-    </Grid>
+    </div>
   );
 };
 

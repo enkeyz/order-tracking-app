@@ -21,24 +21,25 @@ const OrderList = ({ orderList }) => {
         variant="fullWidth"
         aria-label="full width tabs example"
       >
-        <Tab label="All orders" />
-        <Tab label="Uncompleted" />
+        <Tab label="Pending" />
         <Tab label="Completed" />
+        <Tab label="All" />
       </Tabs>
       <OrderFilterPanel value={value} index={0}>
-        {orderList.map((order) => {
-          return <OrderItem key={order.id} order={order} />;
-        })}
-      </OrderFilterPanel>
-      <OrderFilterPanel value={value} index={1}>
         {orderList.map((order) => {
           if (order.completed !== false) return null;
           return <OrderItem key={order.id} order={order} />;
         })}
       </OrderFilterPanel>
-      <OrderFilterPanel value={value} index={2}>
+      <OrderFilterPanel value={value} index={1}>
         {orderList.map((order) => {
           if (order.completed === false) return null;
+          return <OrderItem key={order.id} order={order} />;
+        })}
+      </OrderFilterPanel>
+
+      <OrderFilterPanel value={value} index={2}>
+        {orderList.map((order) => {
           return <OrderItem key={order.id} order={order} />;
         })}
       </OrderFilterPanel>

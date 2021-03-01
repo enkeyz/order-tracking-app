@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 
 const OrderFilterPanel = (props) => {
   const { children, value, index, ...other } = props;
@@ -12,16 +12,9 @@ const OrderFilterPanel = (props) => {
       {...other}
     >
       {value === index && (
-        <Grid
-          container
-          justify="center"
-          alignItem="center"
-          direction="column"
-          spacing={2}
-          style={{ marginTop: "1rem" }}
-        >
+        <Box mx="auto" pt={3}>
           {children}
-        </Grid>
+        </Box>
       )}
     </div>
   );

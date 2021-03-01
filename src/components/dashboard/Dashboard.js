@@ -17,7 +17,6 @@ const Dashboard = () => {
 
   const handleClickOpen = () => {
     setFormOpen(true);
-    console.log("clicked");
   };
 
   const handleClose = () => {
@@ -34,7 +33,9 @@ const Dashboard = () => {
 
   return (
     <>
-      <DashboardHeader userName={user ? user.displayName : ""} />
+      <DashboardHeader
+        userName={user && user.displayName ? user.displayName : "Anonymous"}
+      />
       <div onClick={handleClickOpen}>
         <AddOrderButton />
       </div>
