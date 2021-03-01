@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
-import Button from "@material-ui/core/Button";
-import Box from "@material-ui/core/Box";
+import { Box, Button, Typography } from "@material-ui/core";
 
 import {
   signInWithGoogle,
@@ -31,12 +30,15 @@ const Login = () => {
       flexDirection="column"
       style={{ width: "100vw", height: "100vh" }}
     >
+      <Typography variant="h2" style={{ marginBottom: "5rem" }}>
+        Order tracking app
+      </Typography>
       <Button
         variant="contained"
         color="primary"
         size="large"
         onClick={signInWithGoogle}
-        style={{ marginBottom: "2rem" }}
+        style={{ marginBottom: "1rem" }}
       >
         LogIn with Google
       </Button>
