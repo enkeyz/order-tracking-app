@@ -69,7 +69,11 @@ const OrderFormModal = ({ open, onClose }) => {
       <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Enter order data</DialogTitle>
         <DialogContent>
-          <form className={classes.root} onSubmit={handleSubmit}>
+          <form
+            className={classes.root}
+            onSubmit={handleSubmit}
+            noValidate={false}
+          >
             <div>
               <TextField
                 autoFocus
