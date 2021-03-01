@@ -54,7 +54,9 @@ const OrderItem = ({ order }) => {
               <Grid item></Grid>
             </Grid>
             <Grid item>
-              <Typography variant="subtitle1">{order.price}</Typography>
+              <Typography variant="subtitle1">
+                {order.price} {order.currency}
+              </Typography>
             </Grid>
           </Grid>
         </Grid>
