@@ -6,7 +6,7 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     match /order-list/{document=**} {
-  		allow read, write, update: if request.auth != null && resource.data.userId == request.auth.uid;
+  	allow read, write, update: if request.auth != null && resource.data.userId == request.auth.uid;
         allow create: if request.auth != null;
     }
   }
