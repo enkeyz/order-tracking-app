@@ -14,9 +14,16 @@ import MenuItem from "@material-ui/core/MenuItem";
 const currencies = ["USD", "EUR", "GBP", "HUF"];
 const orderStatuses = ["pending", "paid", "on route", "completed"];
 
-const OrderFormModal = ({ open, onClose }) => {
+const OrderFormModal = ({ open, onClose, docId, editing }) => {
   const firestore = useFirestore();
   const { uid } = useSelector((state) => state.firebase.auth);
+
+  const [isEditing, setIsEditing] = useState(editing ? true : false);
+  const orders = useSelector((state) => state.firestore.data.orders);
+  const orderToEdit =
+    isEditing &&
+    orders &&
+    Object.entries(orders).find(([id, order]) => id === docId)[1];
 
   const addNewOrder = (order) => {
     firestore
@@ -29,18 +36,32 @@ const OrderFormModal = ({ open, onClose }) => {
       });
   };
 
-  const [formData, setFormData] = useState({
-    title: "",
-    price: "",
-    currency: "",
-    orderStatus: "",
-    transportMethod: "",
-    name: "",
-    email: "",
-    phone: "",
-    link: "",
-    orderId: "",
-  });
+  const editOrder = (order) => {
+    firestore
+      .collection("users")
+      .doc(uid)
+      .collection("orders")
+      .doc(docId)
+      .update({
+        ...order,
+      });
+  };
+
+  const [formData, setFormData] = useState(
+    !isEditing
+      ? {
+          title: "",
+          price: "",
+          transportMethod: "",
+          name: "",
+          email: "",
+          phone: "",
+          link: "",
+          orderId: "",
+        }
+      : orderToEdit
+  );
+
   const [currency, setCurrency] = useState("HUF");
   const [orderStatus, setOrderStatus] = useState("paid");
 
@@ -55,7 +76,12 @@ const OrderFormModal = ({ open, onClose }) => {
   const handleSubmit = async (ev) => {
     ev.preventDefault();
 
-    addNewOrder({ ...formData, currency, orderStatus });
+    if (isEditing) {
+      editOrder({ ...formData, currency, orderStatus });
+      setIsEditing(false);
+    } else {
+      addNewOrder({ ...formData, currency, orderStatus });
+    }
     onClose();
   };
 

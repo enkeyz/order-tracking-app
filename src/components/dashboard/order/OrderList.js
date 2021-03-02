@@ -12,6 +12,7 @@ const OrderList = () => {
     collection: `users/${uid}/orders`,
     storeAs: "orders",
   });
+
   const orders = useSelector((state) => state.firestore.ordered.orders);
   const [value, setValue] = useState(0);
 
