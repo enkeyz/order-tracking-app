@@ -1,11 +1,10 @@
 import React from "react";
 import { Grid, Paper, Typography } from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import EditIcon from "@material-ui/icons/Edit";
 import { makeStyles } from "@material-ui/core/styles";
 import DeleteOrderButton from "../buttons/DeleteOrderButton";
 import CompleteOrderButton from "../buttons/CompleteOrderButton";
 import OrderLinkButton from "../buttons/OrderLinkButton";
+import EditOrderButton from "../buttons/EditOrderButton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,9 +62,7 @@ const OrderItem = ({ order }) => {
             <CompleteOrderButton docId={order.id} />
           </Grid>
           <Grid item xs={3} align="center">
-            <IconButton color="primary" aria-label="complete">
-              <EditIcon />
-            </IconButton>
+            <EditOrderButton docId={order.id} />
           </Grid>
           <Grid item xs={3} align="center">
             <OrderLinkButton url={order.link} />

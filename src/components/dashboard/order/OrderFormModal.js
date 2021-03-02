@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFirestore } from "react-redux-firebase";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 
 import Button from "@material-ui/core/Button";
@@ -14,16 +15,33 @@ import MenuItem from "@material-ui/core/MenuItem";
 const currencies = ["USD", "EUR", "GBP", "HUF"];
 const orderStatuses = ["pending", "paid", "on route", "completed"];
 
-const OrderFormModal = ({ open, onClose, docId, editing }) => {
+const OrderFormModal = ({ open, onClose }) => {
   const firestore = useFirestore();
-  const { uid } = useSelector((state) => state.firebase.auth);
+  const dispatch = useDispatch();
 
-  const [isEditing, setIsEditing] = useState(editing ? true : false);
-  const orders = useSelector((state) => state.firestore.data.orders);
+  const { uid } = useSelector((state) => state.firebase.auth);
+  const orders = useSelector((state) => state.firestore.ordered.orders);
+
+  const { currentlyEditing, orderDocId } = useSelector(
+    (state) => state.orderform
+  );
   const orderToEdit =
-    isEditing &&
-    orders &&
-    Object.entries(orders).find(([id, order]) => id === docId)[1];
+    currentlyEditing && orders.find((order) => order.id === orderDocId);
+
+  const [formData, setFormData] = useState({
+    title: "",
+    price: "",
+    transportMethod: "",
+    name: "",
+    email: "",
+    phone: "",
+    link: "",
+    orderId: "",
+  });
+
+  useEffect(() => {
+    if (currentlyEditing) setFormData(orderToEdit);
+  }, [currentlyEditing, orderToEdit]);
 
   const addNewOrder = (order) => {
     firestore
@@ -41,26 +59,11 @@ const OrderFormModal = ({ open, onClose, docId, editing }) => {
       .collection("users")
       .doc(uid)
       .collection("orders")
-      .doc(docId)
+      .doc(orderDocId)
       .update({
         ...order,
       });
   };
-
-  const [formData, setFormData] = useState(
-    !isEditing
-      ? {
-          title: "",
-          price: "",
-          transportMethod: "",
-          name: "",
-          email: "",
-          phone: "",
-          link: "",
-          orderId: "",
-        }
-      : orderToEdit
-  );
 
   const [currency, setCurrency] = useState("HUF");
   const [orderStatus, setOrderStatus] = useState("paid");
@@ -76,13 +79,13 @@ const OrderFormModal = ({ open, onClose, docId, editing }) => {
   const handleSubmit = async (ev) => {
     ev.preventDefault();
 
-    if (isEditing) {
+    if (currentlyEditing) {
       editOrder({ ...formData, currency, orderStatus });
-      setIsEditing(false);
+      dispatch({ type: "FINISHED_EDITING" });
     } else {
       addNewOrder({ ...formData, currency, orderStatus });
+      dispatch({ type: "FINISHED_EDITING" });
     }
-    onClose();
   };
 
   return (
