@@ -32,7 +32,10 @@ const OrderItem = ({ order }) => {
                   gutterBottom
                   variant="h6"
                   style={{
-                    textDecoration: order.completed ? "line-through" : "none",
+                    textDecoration:
+                      order.orderStatus === "completed"
+                        ? "line-through"
+                        : "none",
                   }}
                 >
                   {order.title}
@@ -41,7 +44,7 @@ const OrderItem = ({ order }) => {
                   {order.name}
                 </Typography>
                 <Typography variant="body2" color="textSecondary">
-                  {order.orderId}
+                  Status: {order.orderStatus}
                 </Typography>
               </Grid>
             </Grid>

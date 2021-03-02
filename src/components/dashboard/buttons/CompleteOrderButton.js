@@ -15,7 +15,10 @@ const CompleteOrderButton = ({ docId }) => {
       .doc(uid)
       .collection("orders")
       .doc(docId)
-      .update({ completed: true });
+      .update({
+        completedOn: new Date(Date.now()).toLocaleDateString(),
+        orderStatus: "completed",
+      });
   };
 
   return (

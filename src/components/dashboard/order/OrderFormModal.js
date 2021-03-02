@@ -11,20 +11,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import MenuItem from "@material-ui/core/MenuItem";
 
-const currencies = [
-  {
-    value: "USD",
-    label: "USD",
-  },
-  {
-    value: "EUR",
-    label: "EUR",
-  },
-  {
-    value: "HUF",
-    label: "HUF",
-  },
-];
+const currencies = ["USD", "EUR", "GBP", "HUF"];
+const orderStatuses = ["pending", "paid", "on route", "completed"];
 
 const OrderFormModal = ({ open, onClose }) => {
   const firestore = useFirestore();
@@ -37,7 +25,6 @@ const OrderFormModal = ({ open, onClose }) => {
       .collection("orders")
       .add({
         ...order,
-        completed: false,
         _id: uuidv4(),
       });
   };
@@ -45,7 +32,9 @@ const OrderFormModal = ({ open, onClose }) => {
   const [formData, setFormData] = useState({
     title: "",
     price: "",
-    currency: "HUF",
+    currency: "",
+    orderStatus: "",
+    transportMethod: "",
     name: "",
     email: "",
     phone: "",
@@ -53,15 +42,20 @@ const OrderFormModal = ({ open, onClose }) => {
     orderId: "",
   });
   const [currency, setCurrency] = useState("HUF");
+  const [orderStatus, setOrderStatus] = useState("paid");
 
-  const handleChange = (event) => {
+  const handleCurrencyChange = (event) => {
     setCurrency(event.target.value);
+  };
+
+  const handleStatusChange = (event) => {
+    setOrderStatus(event.target.value);
   };
 
   const handleSubmit = async (ev) => {
     ev.preventDefault();
 
-    addNewOrder(formData);
+    addNewOrder({ ...formData, currency, orderStatus });
     onClose();
   };
 
@@ -99,16 +93,31 @@ const OrderFormModal = ({ open, onClose }) => {
               }
             />
             <TextField
+              style={{ marginRight: "1rem" }}
               id="standard-select-currency"
               select
               label="Select"
               value={currency}
-              onChange={handleChange}
-              helperText="Please select your currency"
+              onChange={handleCurrencyChange}
+              helperText="Please select currency"
             >
               {currencies.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.label}
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              id="standard-select-status"
+              select
+              label="Select"
+              value={orderStatus}
+              onChange={handleStatusChange}
+              helperText="Select order status"
+            >
+              {orderStatuses.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
                 </MenuItem>
               ))}
             </TextField>
@@ -123,6 +132,19 @@ const OrderFormModal = ({ open, onClose }) => {
               value={formData.title}
               onChange={(ev) =>
                 setFormData({ ...formData, title: ev.target.value })
+              }
+            />
+            <TextField
+              margin="normal"
+              variant="outlined"
+              id="title"
+              label="Transport method"
+              type="text"
+              fullWidth
+              required={true}
+              value={formData.transportMethod}
+              onChange={(ev) =>
+                setFormData({ ...formData, transportMethod: ev.target.value })
               }
             />
             <TextField

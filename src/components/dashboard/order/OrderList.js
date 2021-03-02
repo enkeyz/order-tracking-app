@@ -36,7 +36,7 @@ const OrderList = () => {
       <OrderFilterPanel value={value} index={0}>
         {orders &&
           orders.map((order) => {
-            if (order.completed === false)
+            if (order.orderStatus !== "completed")
               return <OrderItem key={order._id} order={order} />;
             return null;
           })}
@@ -44,7 +44,7 @@ const OrderList = () => {
       <OrderFilterPanel value={value} index={1}>
         {orders &&
           orders.map((order) => {
-            if (order.completed !== false)
+            if (order.orderStatus === "completed")
               return <OrderItem key={order._id} order={order} />;
             return null;
           })}
