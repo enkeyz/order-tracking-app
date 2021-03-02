@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { useFirestoreConnect, isLoaded } from "react-redux-firebase";
+import { useFirestoreConnect } from "react-redux-firebase";
 import { Tabs, Tab } from "@material-ui/core";
 
 import OrderItem from "./OrderItem";
@@ -18,8 +18,6 @@ const OrderList = () => {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  console.log(orders, isLoaded(orders));
 
   return (
     <>

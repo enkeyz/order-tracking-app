@@ -7,15 +7,12 @@ const Login = () => {
   const firebase = useFirebase();
   const history = useHistory();
 
-  const signInWithGoogle = () => {
-    firebase
-      .login({
-        provider: "google",
-        type: "popup",
-      })
-      .then(() => {
-        history.push("/dashboard");
-      });
+  const signInWithGoogle = async () => {
+    await firebase.login({
+      provider: "google",
+      type: "popup",
+    });
+    history.push("/dashboard");
   };
 
   return (
@@ -26,8 +23,11 @@ const Login = () => {
       flexDirection="column"
       style={{ width: "100vw", height: "100vh" }}
     >
-      <Typography variant="h2" style={{ marginBottom: "5rem" }}>
+      <Typography variant="h2" style={{ marginBottom: "1rem" }}>
         Order tracking app
+      </Typography>
+      <Typography variant="h5" style={{ marginBottom: "3rem" }}>
+        with Redux and Firebase
       </Typography>
       <Button
         variant="contained"

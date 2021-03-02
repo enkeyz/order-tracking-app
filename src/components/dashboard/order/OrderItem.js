@@ -21,10 +21,6 @@ const useStyles = makeStyles((theme) => ({
 const OrderItem = ({ order }) => {
   const classes = useStyles();
 
-  const handleClick = () => {
-    window.open(order.link, "_blank");
-  };
-
   return (
     <div className={classes.root}>
       <Paper className={classes.paper} elevation={5}>

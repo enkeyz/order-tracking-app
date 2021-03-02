@@ -10,7 +10,6 @@ const DeleteOrderButton = ({ docId }) => {
   const { uid } = useSelector((state) => state.firebase.auth);
 
   const removeOrder = () => {
-    console.log("clicked", docId);
     firestore
       .collection("users")
       .doc(uid)
