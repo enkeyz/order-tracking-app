@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 
-const SnackBarPopup = ({ isOpen, message, severity }) => {
+const SnackBarPopup = ({ isOpen, message, severity, duration }) => {
   const [state, setState] = useState({
     open: isOpen,
     vertical: "bottom",
@@ -16,7 +16,7 @@ const SnackBarPopup = ({ isOpen, message, severity }) => {
   };
   return (
     <Snackbar
-      autoHideDuration={6000}
+      autoHideDuration={duration}
       anchorOrigin={{ vertical, horizontal }}
       open={open}
       onClose={handleClose}

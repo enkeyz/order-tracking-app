@@ -7,10 +7,13 @@ const LogoutButton = () => {
   const firebase = useFirebase();
   const history = useHistory();
 
-  const signOut = () => {
-    firebase.logout().then(() => {
+  const signOut = async () => {
+    try {
+      await firebase.logout();
       history.push("/");
-    });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

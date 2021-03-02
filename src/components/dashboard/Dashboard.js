@@ -32,7 +32,12 @@ const Dashboard = () => {
         <OrderList />
       </Container>
       <OrderFormModal open={formOpen} onClose={handleClose} />
-      <SnackBarPopup isOpen={true} message="Logged in!" severity="info" />
+      <SnackBarPopup
+        isOpen={true}
+        message="Logged in!"
+        severity="info"
+        duration={5000}
+      />
     </>
   );
 };

@@ -8,11 +8,15 @@ const Login = () => {
   const history = useHistory();
 
   const signInWithGoogle = async () => {
-    await firebase.login({
-      provider: "google",
-      type: "popup",
-    });
-    history.push("/dashboard");
+    try {
+      await firebase.login({
+        provider: "google",
+        type: "popup",
+      });
+      history.push("/dashboard");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
