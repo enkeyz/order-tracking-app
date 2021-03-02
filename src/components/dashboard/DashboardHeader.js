@@ -1,12 +1,12 @@
 import React from "react";
-import { useFirebase } from "react-redux-firebase";
-import { useHistory } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+
+import LogoutButton from "./buttons/LogoutButton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,14 +18,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const DashboardHeader = ({ logOut, userName }) => {
-  const firebase = useFirebase();
-  const history = useHistory();
-
-  const signOut = () => {
-    firebase.logout().then(() => {
-      history.push("/");
-    });
-  };
   const classes = useStyles();
 
   return (
@@ -36,9 +28,7 @@ const DashboardHeader = ({ logOut, userName }) => {
             Welcome, {userName}
           </Typography>
           <Button color="inherit">Profile</Button>
-          <Button color="inherit" onClick={signOut}>
-            Log out
-          </Button>
+          <LogoutButton />
         </Toolbar>
       </AppBar>
     </div>

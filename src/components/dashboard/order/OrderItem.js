@@ -1,11 +1,11 @@
 import React from "react";
 import { Grid, Paper, Typography } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
-import DoneIcon from "@material-ui/icons/Done";
-import LinkIcon from "@material-ui/icons/Link";
 import EditIcon from "@material-ui/icons/Edit";
 import { makeStyles } from "@material-ui/core/styles";
+import DeleteOrderButton from "../buttons/DeleteOrderButton";
+import CompleteOrderButton from "../buttons/CompleteOrderButton";
+import OrderLinkButton from "../buttons/OrderLinkButton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,9 +58,10 @@ const OrderItem = ({ order }) => {
         </Grid>
         <Grid container direction="row" margin={-10}>
           <Grid item xs={3} align="center">
-            <IconButton color="primary" aria-label="complete">
-              <DoneIcon />
-            </IconButton>
+            <DeleteOrderButton docId={order.id} />
+          </Grid>
+          <Grid item xs={3} align="center">
+            <CompleteOrderButton docId={order.id} />
           </Grid>
           <Grid item xs={3} align="center">
             <IconButton color="primary" aria-label="complete">
@@ -68,14 +69,7 @@ const OrderItem = ({ order }) => {
             </IconButton>
           </Grid>
           <Grid item xs={3} align="center">
-            <IconButton color="primary" aria-label="complete">
-              <DeleteIcon />
-            </IconButton>
-          </Grid>
-          <Grid item xs={3} align="center">
-            <IconButton color="primary" aria-label="complete">
-              <LinkIcon />
-            </IconButton>
+            <OrderLinkButton url={order.link} />
           </Grid>
         </Grid>
       </Paper>

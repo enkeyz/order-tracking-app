@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useFirestore } from "react-redux-firebase";
 import { useSelector } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
 
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -34,7 +35,11 @@ const OrderFormModal = ({ open, onClose }) => {
       .collection("users")
       .doc(uid)
       .collection("orders")
-      .add({ ...order, completed: false });
+      .add({
+        ...order,
+        completed: false,
+        _id: uuidv4(),
+      });
   };
 
   const [formData, setFormData] = useState({

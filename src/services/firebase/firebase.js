@@ -17,3 +17,4 @@ firebase.initializeApp({
 });
 
 export const fireBase = firebase;
+fireBase.firestore();
